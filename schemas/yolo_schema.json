@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "required": [
+        "frame_id",
+        "timestamp",
+        "objects"
+    ],
+    "properties": {
+        "frame_id": {
+            "type": "integer"
+        },
+        "timestamp": {
+            "type": "number"
+        },
+        "objects": {
+            "type": "array"
+        }
+    }
+}

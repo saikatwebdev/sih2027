@@ -1,0 +1,51 @@
+{
+  "frame_id": 1,
+  "timestamp": 0.0,
+  "person": {
+    "id": "person_01",
+    "root": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "joints": {
+      "pelvis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "left_shoulder": [
+        -0.2,
+        1.5,
+        0.0
+      ],
+      "right_shoulder": [
+        0.2,
+        1.5,
+        0.0
+      ],
+      "left_elbow": [
+        -0.3,
+        1.2,
+        0.0
+      ],
+      "right_elbow": [
+        0.3,
+        1.2,
+        0.0
+      ],
+      "left_wrist": [
+        -0.3,
+        0.9,
+        0.0
+      ],
+      "right_wrist": [
+        0.3,
+        0.9,
+        0.0
+      ]
+    },
+    "activity": "IDLE",
+    "confidence": 0.95
+  }
+}
