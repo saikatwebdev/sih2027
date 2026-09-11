@@ -2,12 +2,11 @@ import json
 import time
 from pathlib import Path
 
-from src.input.hmr_reader import HMRReader
 from src.input.yolo_reader import YOLOReader
 from src.validation.validator import JSONValidator
 from src.validation.procedure_validator import ProcedureValidator
 from src.temporal.buffer import TemporalBuffer
-from src.fusion.engine import FusionEngine
+from src.world.builder import WorldModelBuilder
 from src.events.detector import EventDetector
 from src.state_machine.machine import DigitalTwinStateMachine, TwinState
 from src.observations.store import ObservationStore
@@ -15,26 +14,17 @@ from src.observations.store import ObservationStore
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-HMR_DIR = BASE_DIR / "data" / "hmr"
 YOLO_DIR = BASE_DIR / "data" / "yolo"
-
-HMR_SCHEMA = BASE_DIR / "schemas" / "hmr_schema.json"
 YOLO_SCHEMA = BASE_DIR / "schemas" / "yolo_schema.json"
-
 OBSERVATION_FILE = BASE_DIR / "data" / "observations.json"
 ANOMALY_FILE = BASE_DIR / "data" / "anomaly_observations.json"
 
 
-hmr_reader = HMRReader(HMR_DIR)
 yolo_reader = YOLOReader(YOLO_DIR)
-
-hmr_validator = JSONValidator(HMR_SCHEMA)
 yolo_validator = JSONValidator(YOLO_SCHEMA)
-
-hmr_buffer = TemporalBuffer(max_size=5)
 yolo_buffer = TemporalBuffer(max_size=5)
 
-fusion = FusionEngine()
+world_builder = WorldModelBuilder()
 event_detector = EventDetector()
 
 state_machine = DigitalTwinStateMachine()
@@ -80,9 +70,9 @@ def create_output(world, events, state_machine, validation):
         "people": [
             {
                 "id": person.person_id,
-                "activity": person.activity,
                 "position": person.position,
-                "joints": person.joints,
+                "bbox": person.bbox,
+                "activity": person.activity,
                 "confidence": person.confidence
             }
             for person in world.people.values()
@@ -148,20 +138,9 @@ def process_frame(frame_id):
     print("-" * 60)
 
     try:
-        hmr = hmr_reader.read_frame(frame_id)
-    except FileNotFoundError:
-        print(f"[ERROR] HMR frame {frame_id} not found.")
-        return None
-
-    try:
         yolo = yolo_reader.read_frame(frame_id)
     except FileNotFoundError:
         print(f"[ERROR] YOLO frame {frame_id} not found.")
-        return None
-
-    if not hmr_validator.validate(hmr):
-        print("[WARNING] Invalid HMR data.")
-        print("[FRAME SKIPPED]")
         return None
 
     if not yolo_validator.validate(yolo):
@@ -169,16 +148,11 @@ def process_frame(frame_id):
         print("[FRAME SKIPPED]")
         return None
 
-    hmr_buffer.add(hmr)
     yolo_buffer.add(yolo)
 
-    latest_hmr = hmr_buffer.latest()
     latest_yolo = yolo_buffer.latest()
 
-    world = fusion.fuse(
-        latest_hmr,
-        latest_yolo
-    )
+    world = world_builder.build(latest_yolo)
 
     events = event_detector.detect(world)
 
@@ -259,7 +233,7 @@ def main():
     print("DIGITAL TWIN PROCEDURE VALIDATION SYSTEM")
     print("=" * 60)
     print()
-    print("World Model -> State Machine -> Procedure Validator")
+    print("YOLO -> World Model -> State Machine -> Procedure Validator")
     print()
 
     for frame_id in range(

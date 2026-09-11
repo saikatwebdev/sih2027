@@ -6,7 +6,7 @@ from typing import Optional
 class PersonState:
     person_id: str
     position: list
-    joints: dict
+    bbox: list
     activity: str
     confidence: float
 
@@ -16,7 +16,7 @@ class ObjectState:
     object_id: str
     object_type: str
     position_2d: list
-    grid_cell: str
+    grid_cell: Optional[str]
     state: str
     confidence: float
 
@@ -39,23 +39,20 @@ class WorldState:
         return {
             "frame_id": self.frame_id,
             "timestamp": self.timestamp,
-
             "current_state": self.current_state,
             "previous_state": self.previous_state,
-
             "people": {
-                pid: {
+                person_id: {
                     "person_id": person.person_id,
                     "position": person.position,
-                    "joints": person.joints,
+                    "bbox": person.bbox,
                     "activity": person.activity,
                     "confidence": person.confidence
                 }
-                for pid, person in self.people.items()
+                for person_id, person in self.people.items()
             },
-
             "objects": {
-                oid: {
+                object_id: {
                     "object_id": obj.object_id,
                     "object_type": obj.object_type,
                     "position_2d": obj.position_2d,
@@ -63,10 +60,8 @@ class WorldState:
                     "state": obj.state,
                     "confidence": obj.confidence
                 }
-                for oid, obj in self.objects.items()
+                for object_id, obj in self.objects.items()
             },
-
             "environment": self.environment,
-
             "observations": self.observations
         }
