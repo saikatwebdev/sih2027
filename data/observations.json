@@ -1,0 +1,72 @@
+[
+    {
+        "frame_id": 1,
+        "timestamp": 0.0,
+        "current_state": "IDLE",
+        "expected": "APPROACHING_RACK",
+        "observed": "IDLE",
+        "status": "NO_TRANSITION",
+        "reason": "IDLE_WITHOUT_COMPLETION",
+        "stored_at": "2026-09-11T16:05:18.512248"
+    },
+    {
+        "frame_id": 2,
+        "timestamp": 0.1,
+        "current_state": "IDLE",
+        "expected": "APPROACHING_RACK",
+        "observed": "APPROACHING_RACK",
+        "status": "VALID",
+        "reason": "EXPECTED_ACTIVITY",
+        "stored_at": "2026-09-11T16:05:19.017945"
+    },
+    {
+        "frame_id": 3,
+        "timestamp": 0.2,
+        "current_state": "APPROACHING_RACK",
+        "expected": "REACHING_FOR_OBJECT",
+        "observed": "REACHING_FOR_OBJECT",
+        "status": "VALID",
+        "reason": "EXPECTED_ACTIVITY",
+        "stored_at": "2026-09-11T16:05:19.524392"
+    },
+    {
+        "frame_id": 4,
+        "timestamp": 0.3,
+        "current_state": "REACHING_FOR_OBJECT",
+        "expected": "OBJECT_GRABBED",
+        "observed": "OBJECT_GRABBED",
+        "status": "VALID",
+        "reason": "EXPECTED_ACTIVITY",
+        "stored_at": "2026-09-11T16:05:20.029406"
+    },
+    {
+        "frame_id": 5,
+        "timestamp": 0.4,
+        "current_state": "OBJECT_GRABBED",
+        "expected": "MOVING_OBJECT",
+        "observed": "MOVING_OBJECT",
+        "status": "VALID",
+        "reason": "EXPECTED_ACTIVITY",
+        "stored_at": "2026-09-11T16:05:20.536291"
+    },
+    {
+        "frame_id": 6,
+        "timestamp": 0.5,
+        "current_state": "MOVING_OBJECT",
+        "expected": "OBJECT_PLACED",
+        "observed": "OBJECT_PLACED",
+        "status": "VALID",
+        "reason": "EXPECTED_ACTIVITY",
+        "stored_at": "2026-09-11T16:05:21.042596"
+    },
+    {
+        "frame_id": 7,
+        "timestamp": 0.6,
+        "current_state": "OBJECT_PLACED",
+        "expected": "TASK_COMPLETE",
+        "observed": "TASK_COMPLETE",
+        "status": "VALID",
+        "reason": "EXPECTED_ACTIVITY",
+        "stored_at": "2026-09-11T16:05:21.548618"
+    }
+]
